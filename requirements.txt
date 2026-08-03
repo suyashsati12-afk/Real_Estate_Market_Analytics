@@ -1,0 +1,76 @@
+Skip to content
+suyashsati12-afk
+Real_Estate_Market_Analytics
+Repository navigation
+Code
+Issues
+Pull requests
+Agents
+Actions
+Projects
+Wiki
+Security and quality
+Insights
+Settings
+Files
+Go to file
+t
+T
+Real_Estate_Market_Analytics
+assets
+auth
+dashboard
+data
+database
+python
+requirements.txt
+README.md
+Real_Estate_Market_Analytics/Real_Estate_Market_Analytics
+/
+requirements.txt
+in
+main
+
+Edit
+
+Preview
+Indent mode
+
+Spaces
+Indent size
+
+2
+Line wrap mode
+
+No wrap
+Editing requirements.txt file contents
+  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+streamlit
+pandas
+numpy
+matplotlib
+plotly
+scikit-learn
+bcrypt
+Pillow
+openpyxl
+folium
+statsmodels
+SQLAlchemy
+streamlit-option-menu
+
+Use Control + Shift + m to toggle the tab key moving focus. Alternatively, use esc then tab to move to the next interactive element on the page.
+ 
