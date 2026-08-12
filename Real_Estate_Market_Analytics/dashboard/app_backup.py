@@ -1,17 +1,64 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
+import os
 
+
+# ==============================
+# Project & Data Path
+# ==============================
+
+BASE_DIR = os.path.dirname(
+    os.path.dirname(
+        os.path.abspath(__file__)
+    )
+)
+
+DATA_DIR = os.path.join(
+    BASE_DIR,
+    "data"
+)
+
+
+# ==============================
+# Dashboard Function
+# ==============================
 
 def show_dashboard():
 
-    st.title("🏠 Real Estate Market Analytics Dashboard")
+    st.title(
+        "🏠 Real Estate Market Analytics Dashboard"
+    )
 
+    # ==============================
     # Load Dataset
-    df = pd.read_csv("data/price_forecast.csv")
-    df["month"] = pd.to_datetime(df["month"])
+    # ==============================
 
-    # ================= KPI Cards =================
+    file_path = os.path.join(
+        DATA_DIR,
+        "price_forecast.csv"
+    )
+
+    try:
+
+        df = pd.read_csv(file_path)
+
+    except FileNotFoundError:
+
+        st.error(
+            f"❌ Dataset not found: {file_path}"
+        )
+
+        return
+
+    df["month"] = pd.to_datetime(
+        df["month"]
+    )
+
+
+    # ==============================
+    # KPI Cards
+    # ==============================
 
     col1, col2, col3 = st.columns(3)
 
@@ -32,11 +79,18 @@ def show_dashboard():
 
     st.divider()
 
-    # ================= Line Chart =================
 
-    st.subheader("📈 Price Prediction Trend")
+    # ==============================
+    # Line Chart
+    # ==============================
 
-    fig, ax = plt.subplots(figsize=(10, 4))
+    st.subheader(
+        "📈 Price Prediction Trend"
+    )
+
+    fig, ax = plt.subplots(
+        figsize=(10, 4)
+    )
 
     ax.plot(
         df["month"],
@@ -55,23 +109,39 @@ def show_dashboard():
 
     ax.set_xlabel("Month")
     ax.set_ylabel("Price")
+
     ax.legend()
 
-    plt.xticks(rotation=45)
+    plt.xticks(
+        rotation=45
+    )
 
     st.pyplot(fig)
 
+
     st.divider()
 
-    # ================= Pie + Bar Chart =================
+
+    # ==============================
+    # Pie + Bar Chart
+    # ==============================
 
     col1, col2 = st.columns(2)
 
+
+    # ==============================
+    # Pie Chart
+    # ==============================
+
     with col1:
 
-        st.subheader("🥧 Price Distribution")
+        st.subheader(
+            "🥧 Price Distribution"
+        )
 
-        fig, ax = plt.subplots(figsize=(5, 5))
+        fig, ax = plt.subplots(
+            figsize=(5, 5)
+        )
 
         values = [
             df["avg_price"].mean(),
@@ -91,52 +161,89 @@ def show_dashboard():
 
         st.pyplot(fig)
 
+
+    # ==============================
+    # Bar Chart
+    # ==============================
+
     with col2:
 
-        st.subheader("📊 Average Price by Month")
+        st.subheader(
+            "📊 Average Price by Month"
+        )
 
         chart = df.copy()
 
-        chart["Month"] = chart["month"].dt.strftime("%b-%Y")
+        chart["Month"] = (
+            chart["month"]
+            .dt.strftime("%b-%Y")
+        )
 
         st.bar_chart(
-            chart.set_index("Month")["avg_price"]
+            chart.set_index(
+                "Month"
+            )["avg_price"]
         )
+
 
     st.divider()
 
-    # ================= Dataset Preview =================
 
-    st.subheader("📋 Dataset Preview")
+    # ==============================
+    # Dataset Preview
+    # ==============================
+
+    st.subheader(
+        "📋 Dataset Preview"
+    )
 
     st.dataframe(
         df.head(20),
         use_container_width=True
     )
 
-    st.write(f"📄 Total Rows : {len(df)}")
-    st.write(f"📊 Total Columns : {len(df.columns)}")
+    st.write(
+        f"📄 Total Rows : {len(df)}"
+    )
+
+    st.write(
+        f"📊 Total Columns : {len(df.columns)}"
+    )
+
 
     st.divider()
 
-    # ================= Recent Forecast =================
 
-    st.subheader("🗓 Recent Forecast")
+    # ==============================
+    # Recent Forecast
+    # ==============================
+
+    st.subheader(
+        "🗓 Recent Forecast"
+    )
 
     st.dataframe(
         df.tail(5),
         use_container_width=True
     )
 
+
     st.divider()
 
-    # ================= Transaction Trend =================
+
+    # ==============================
+    # Transaction Trend
+    # ==============================
 
     if "txn_count" in df.columns:
 
-        st.subheader("📈 Transaction Trend")
+        st.subheader(
+            "📈 Transaction Trend"
+        )
 
-        fig, ax = plt.subplots(figsize=(10,4))
+        fig, ax = plt.subplots(
+            figsize=(10, 4)
+        )
 
         ax.plot(
             df["month"],
@@ -144,20 +251,34 @@ def show_dashboard():
             marker="o"
         )
 
-        ax.set_xlabel("Month")
-        ax.set_ylabel("Transactions")
+        ax.set_xlabel(
+            "Month"
+        )
 
-        plt.xticks(rotation=45)
+        ax.set_ylabel(
+            "Transactions"
+        )
+
+        plt.xticks(
+            rotation=45
+        )
 
         st.pyplot(fig)
 
-    # ================= Growth Analysis =================
+
+    # ==============================
+    # Growth Analysis
+    # ==============================
 
     if "yoy_growth_pct" in df.columns:
 
-        st.subheader("📉 Year-on-Year Growth")
+        st.subheader(
+            "📉 Year-on-Year Growth"
+        )
 
-        fig, ax = plt.subplots(figsize=(10,4))
+        fig, ax = plt.subplots(
+            figsize=(10, 4)
+        )
 
         ax.plot(
             df["month"],
@@ -165,13 +286,24 @@ def show_dashboard():
             marker="o"
         )
 
-        ax.set_xlabel("Month")
-        ax.set_ylabel("Growth (%)")
+        ax.set_xlabel(
+            "Month"
+        )
 
-        plt.xticks(rotation=45)
+        ax.set_ylabel(
+            "Growth (%)"
+        )
+
+        plt.xticks(
+            rotation=45
+        )
 
         st.pyplot(fig)
 
+
+# ==============================
+# Standalone Execution
+# ==============================
 
 if __name__ == "__main__":
 
